@@ -3,19 +3,70 @@ import requests
 import config
 import os
 import json
-playlist = [ "Thriller; Michael Jackson",
-             "Wake Me Up; The Weeknd",
-            "90210; Travis Scott",
-            "When Doves Cry; Prince",
-             "Daydreaming; Radiohead"         
+import random
+from collections import Counter
+#so for this playlist we get max 100 * n songs recs that gets filtered to just 10 songs
+playlist = [ "93 'Til Infinity; Souls Of Mischief",
+            "Renegade; JAY-Z",
+            "Hit 'em Up; 2Pac",
+            "Moment of Clarity; JAY-Z",
+            "Survival of the Fittest; Mobb Deep",
+            "It Was A Good Day; Ice Cube",
+            "Halftime; Nas"
             ]
+
+def recs():
+    songs= []
+    with open(os.path.join("backend", "actualTracks.txt"), "r") as f:
+        seen = set()
+        for line in f:
+            line_lower = line.lower()
+            if line_lower in seen:
+                songs.append(line)
+            else:
+                seen.add(line_lower)
+
+    for song in playlist:
+        while (song+"\n") in songs:
+            songs.remove(song+"\n")
+            
+    seenAlready = set()
+    for song in songs:
+        if song in seenAlready:
+            continue
+        else:
+            seenAlready.add(song)
+
+    # print(seenAlready)
+    reccommended= random.sample(seenAlready, 10)
+    cleaned_list = [element.strip() for element in reccommended]
+    print(cleaned_list)
+    return 0
 #for now hard-code a list, but eventually import playlists and liked album, songs from Spotify or something
 def getPlaylistInfo(playlist):
+    total = []
+    moreTags = []
     for song in playlist:
         song = song.strip()
         title = song.split(';')[0]
         artist= song.split(';')[1].strip()
-
+        artist = getRidOfSpaces(artist)
+        title = getRidOfSpaces(title)
+        realJSON= getTags(artist, title)
+        processedTags =processTags(realJSON)
+        for tag in processedTags:
+            moreTags.append(tag)
+        # lister = oneTag(processedTags)
+        # total.append(getSongs(lister))
+    # with open(os.path.join("backend", "actualTracks.txt"), "a") as f:
+    #      for item in total:
+    #        for it in item:
+    #         f.write(it + "\n")
+        #  f.write(total)
+    with open(os.path.join("backend", "actualTags.txt"), "a") as f:
+            for tag in moreTags:
+                f.write(tag+"\n")
+    # print(moreTags)
     return 0
 
 def getTags(artist, title):
@@ -36,7 +87,17 @@ def processTags(jsons):
     print(allTags)
     return allTags
 
-
+def moreProcessTags():
+    allTags = []
+    with open(os.path.join("backend", "actualTags.txt"), "r") as f:
+            for item in f:
+                allTags.append(item)
+    
+    counter = Counter(allTags)  # Count occurrences
+    actual =  [item for item, _ in counter.most_common(10)]       
+    print(actual)
+    return 0
+    
 #outputs all songs that fit each tag so 10 songs per 10 tags makes 100 songs
 #but this oneTag function is for only one song's tags
 def oneTag(allTags):
@@ -54,7 +115,7 @@ def getSongs(listOfJsons):
         for ii in range( len (listOfJsons[i]["tracks"]["track"])):
              listOfSongs.append(listOfJsons[i]["tracks"]["track"][ii]["name"]+"; "+ listOfJsons[i]["tracks"]["track"][ii]["artist"]["name"])
     print(len(listOfSongs))
-    return 0
+    return listOfSongs
 
 def oneTrack(artist, title):
     artist = getRidOfSpaces(artist)
@@ -77,11 +138,13 @@ def getRidOfSpaces(name):
      return name
 
 if __name__ == '__main__':
-    getPlaylistInfo(playlist)
-    #realJSON= getTags("Michael Jackson", "Billie Jean")
-    processedTags =processTags(tagJSON)
-    lister = oneTag(processedTags)
-    getSongs(lister)
+    #   getPlaylistInfo(playlist)
+      moreProcessTags()
+    #  recs()
+    # realJSON= getTags("Michael Jackson", "Billie Jean")
+    # processedTags =processTags(realJSON)
+    # lister = oneTag(processedTags)
+    # getSongs(lister)
     # with open(os.path.join("backend", "tracks.txt"), "a") as f:
     #     f.write(lister[1])
         # for section in lister:
