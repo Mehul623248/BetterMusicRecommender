@@ -5,10 +5,9 @@ import {
   Routes,
   Route
 } from 'react-router-dom';
+
 import HomePage from "./HomePage/HomePage";
-// import SignUpPage from "./SignUpPage/SignUpPage";
-// import TravelPlanPage from "./TravelPlanPage/TravelPlanPage";
-// import MapPage from "./MapPage/MapPage";
+
 
 
 
@@ -17,8 +16,9 @@ function App() {
   return (
     <Router>
       <Routes>
-          <Route path="/" element={<HomePage/>} />
         
+          <Route path="/" element={<HomePage/>} />
+          
       </Routes>
     </Router>
   );

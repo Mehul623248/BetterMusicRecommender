@@ -4,21 +4,44 @@ import {Padding, PlaceOutlined, Visibility, VisibilityOff} from '@mui/icons-mate
 import React, {useState} from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
-function MapPage() {
+function HomePage() {
+    const [ song, setSongValue ] = useState('');
+    const handleClick = () => {
+        if(song === ''){
+            console.log('Song container cannot be empty!');
+        }
+        else{
+            alert(song);
+        }
+    }
     return (
-        <div className="page-content-mapper">
-            <h1><b>Map</b></h1>
-            <br></br>
-            <br></br>
-            <br></br>
-            <br></br>
-            <br></br>
+        <div className="page-content-home">
+            <h1><b>Song Recommendations</b></h1>
+             <div>
+             <TextField
+                      label='song'
+                      onChange={(e) => setSongValue(e.target.value)}
+                      variant='outlined'
+                      style = {{backgroundColor: 'grey', borderColor: 'red'}}
+                  />
+             </div>
+             <div>
+             <Button
+                        onClick={handleClick}
+                        variant = 'outlined'
+                        label = 'Go'
+                        style = {{
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            margin: '10px',
+                            width: '100px',
+                            height: '30px',
+                            color: 'red'
+                        }}
+                    >Go</Button>
+             </div>
+            
 
-
-           
-            <br></br>
-            <br></br>
-            <br></br>
              <div>
           
                         <Button
@@ -30,9 +53,9 @@ function MapPage() {
                                          alignItems: 'center',
                                          margin: '10px',
                                        
-                                         color: 'black'
+                                         color: 'red'
                                       }}
-                            >Back</Button>
+                            >Get Recs</Button>
             
              </div>
             
@@ -43,4 +66,4 @@ function MapPage() {
   }
   
   
-  export default MapPage;
+  export default HomePage;
