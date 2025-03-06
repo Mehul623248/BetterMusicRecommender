@@ -4,4 +4,8 @@ body {
   
 .page-content-home {
     color: white;
+    text-align: center;
+  }
+  ul {
+    list-style-type: none;
   }

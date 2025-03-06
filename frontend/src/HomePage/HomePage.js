@@ -6,12 +6,23 @@ import { Link, useNavigate } from 'react-router-dom';
 
 function HomePage() {
     const [ song, setSongValue ] = useState('');
-    const handleClick = () => {
-        if(song === ''){
-            console.log('Song container cannot be empty!');
+    // const [songList, setSongListValue] = useState([]);
+
+    const [songs, setSongs] = useState([]);
+ 
+
+    const handleClick = (e) => {
+        //e.preventDefault();
+        if (song.trim() !== "") {
+            setSongs([...songs, song]);
+            setSongValue(""); // Clear input field after submission
         }
-        else{
-            alert(song);
+    }
+    const handleClick2 = (e) =>{
+        if (songs.length > 0) {
+            songs.pop();
+            setSongs([...songs])
+            //setSongValue(""); // Clear input field after submission
         }
     }
     return (
@@ -36,10 +47,33 @@ function HomePage() {
                             margin: '10px',
                             width: '100px',
                             height: '30px',
+                            borderColor: 'red',
                             color: 'red'
                         }}
                     >Go</Button>
+                    <Button
+                        onClick={handleClick2}
+                        variant = 'outlined'
+                        label = 'Go'
+                        style = {{
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            margin: '10px',
+                            width: '100px',
+                            height: '30px',
+                            borderColor: 'red',
+                            color: 'red'
+                        }}
+                    >Remove</Button>
              </div>
+             
+             {songs.length > 0 && (
+                <ul className="mt-4">
+                {songs.map((song, index) => (
+                    <li key={index} >{song}</li>
+                ))}
+                </ul>
+           )}
             
 
              <div>
@@ -52,7 +86,8 @@ function HomePage() {
                                          justifyContent: 'center',
                                          alignItems: 'center',
                                          margin: '10px',
-                                       
+                                         borderColor: 'red',
+
                                          color: 'red'
                                       }}
                             >Get Recs</Button>
