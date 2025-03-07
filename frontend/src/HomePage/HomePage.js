@@ -3,17 +3,19 @@ import {Autocomplete, Button, TextField, InputAdornment, IconButton, Typography}
 import {Padding, PlaceOutlined, Visibility, VisibilityOff} from '@mui/icons-material'
 import React, {useState} from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 function HomePage() {
     const [ song, setSongValue ] = useState('');
     // const [songList, setSongListValue] = useState([]);
 
     const [songs, setSongs] = useState([]);
- 
+    const [recs,setRecs] = useState([]);
+    const url = "http://localhost:5000";
 
     const handleClick = (e) => {
         //e.preventDefault();
-        if (song.trim() !== "") {
+        if (song.trim() !== "" && song.includes(" by ")) {
             setSongs([...songs, song]);
             setSongValue(""); // Clear input field after submission
         }
@@ -23,6 +25,18 @@ function HomePage() {
             songs.pop();
             setSongs([...songs])
             //setSongValue(""); // Clear input field after submission
+        }
+    }
+
+    const handleRecs = (e) =>{
+        if(songs.length < 1){
+            alert("You did not add any songs");
+        }
+        else{
+            axios.post(url + `/getRecs`, {songs})
+            .then((response) => {
+                setRecs(response.data);
+            })
         }
     }
     return (
@@ -70,7 +84,7 @@ function HomePage() {
              {songs.length > 0 && (
                 <ul className="mt-4">
                 {songs.map((song, index) => (
-                    <li key={index} >{song}</li>
+                    <li key={index} >{song}<br></br> <br></br> </li>
                 ))}
                 </ul>
            )}
@@ -79,7 +93,7 @@ function HomePage() {
              <div>
           
                         <Button
-                                    // onClick={handleLoginClick}
+                                     onClick={handleRecs}
                                      variant = 'outlined'
                                      label = 'see path'
                                      style = {{
@@ -93,7 +107,16 @@ function HomePage() {
                             >Get Recs</Button>
             
              </div>
-            
+            <div>
+                <p>needs to be in format: Song by Artist with spaces before and after the word by</p>
+            </div>
+            {recs.length > 0 && (
+                <ul className="mt-4">
+                {recs.map((rec, index) => (
+                    <li key={index} >{rec}<br></br> <br></br></li>
+                ))}
+                </ul>
+           )}
         </div>
         
        

@@ -78,7 +78,7 @@ def realRecs(seenAlready, origTags):
 
     print(len(common_elements))
     print(cleaned_list)
-    return 0
+    return cleaned_list
 
 
 #for now hard-code a list, but eventually import playlists and liked album, songs from Spotify or something
