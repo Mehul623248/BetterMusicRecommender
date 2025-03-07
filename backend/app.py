@@ -40,6 +40,7 @@ def login():
     rec.youTube(x)
     y= rec.recs()
     reccomnendations = rec.realRecs(y, x)
+    #rec.coverArtURLs(reccomnendations)
     return reccomnendations
 
 

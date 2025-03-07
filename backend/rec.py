@@ -155,10 +155,39 @@ def getRidOfSpaces(name):
 
      return name
 
+def get_cover_from_itunes(artist, song):
+    try:
+        url = f"https://itunes.apple.com/search?term={artist} {song}&entity=song&limit=5"
+        response = requests.get(url)
+        data = response.json()
+
+        if data["resultCount"] > 0:
+            for i in range(len(data["results"])) :
+                if data["results"][i]["artistName"].lower() ==  artist.lower():
+                    return data["results"][i]["artworkUrl100"].replace("100x100", "500x500")
+                        
+        return None
+    except Exception as e:
+        print(f"Error fetching from iTunes: {e}")
+        return None
+
+def coverArtURLs(playlist1):
+    lis = []
+    for song in playlist1:
+        song = song.strip()
+        title = song.split(';')[0]
+        title = re.sub(r"\(.*?\)", "", title)
+        artist= song.split(';')[1].strip()
+        artist = getRidOfSpaces(artist)
+        title = getRidOfSpaces(title)
+        lis.append(get_cover_from_itunes(artist, title))
+
+    return lis
 if __name__ == '__main__':
-      getPlaylistInfo(playlist)
-      x=  moreProcessTags()
-      youTube(x)
-      y= recs()
-      realRecs(y, x)
- 
+    #   getPlaylistInfo(playlist)
+    #   x=  moreProcessTags()
+    #   youTube(x)
+    #   y= recs()
+    #   realRecs(y, x)
+    # print(get_cover_from_itunes("Eminem", "Lose Yourself"))
+    print(coverArtURLs(playlist))
