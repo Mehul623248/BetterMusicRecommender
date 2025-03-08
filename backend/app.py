@@ -39,9 +39,9 @@ def login():
     x=  rec.moreProcessTags()
     rec.youTube(x)
     y= rec.recs()
-    reccomnendations = rec.realRecs(y, x)
-    #rec.coverArtURLs(reccomnendations)
-    return reccomnendations
+    reccomendations = rec.realRecs(y, x)
+    imgs = rec.coverArtURLs(reccomendations)
+    return [reccomendations, imgs]
 
 
 @app.route('/signup', methods=['POST'])

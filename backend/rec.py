@@ -6,36 +6,33 @@ import json
 import random
 from collections import Counter
 #so for this playlist we get max 100 * n songs recs that gets filtered to just 10 songs
-playlist = [ "93 'Til Infinity; Souls Of Mischief",
-            "Renegade; JAY-Z",
-            "Hit 'em Up; 2Pac",
-            "Moment of Clarity; JAY-Z",
-            "Survival of the Fittest; Mobb Deep",
-            "It Was A Good Day; Ice Cube",
-            "Halftime; Nas"
-            ]
+# playlist = [ "93 'Til Infinity; Souls Of Mischief",
+#             "Renegade; JAY-Z",
+#             "Hit 'em Up; 2Pac",
+#             "Moment of Clarity; JAY-Z",
+#             "Survival of the Fittest; Mobb Deep",
+#             "It Was A Good Day; Ice Cube",
+#             "Halftime; Nas"
+#             ]
 
-# playlist = [
-#             "Feet Don't Fail Me Now; Joy Crookes",
-#             "Coffee; beabadoobee",
-#             "Crown; Stormzy",
-#             "PRIDE.; Kendrick Lamar",
-#             "Gila; Beach House",
-#             "Slide; Calvin Harris",
-#             "Passionfruit; Drake"
+playlist = [
+           "Wicked Games; The Weeknd",
+"Coming Down; The Weeknd",
+"High For This; The Weeknd"
 
-# ]
+]
 
 def youTube(lis):
     from ytmusicapi import YTMusic
     ytmusic = YTMusic()
     quest = ' '.join(lis)
     txt = ytmusic.search(query=quest, filter="songs", limit=30)
-    with open(os.path.join("backend", "songs.txt"), "w") as f:
-          for i in range(30):
-            f.write(txt[i]["title"] +"; " +txt[i]["artists"][0]['name']+ "\n")  
-    return txt[19]["title"]
-
+    japanese_chinese_regex = re.compile(r'[\u4E00-\u9FFF\u3040-\u30FF\u31F0-\u31FF]')
+    with open(os.path.join("backend", "songs.txt"), "w", encoding="utf-8") as f:
+          for i in range(len(txt)):
+            if len(japanese_chinese_regex.findall(txt[i]["title"])) == 0 and len(japanese_chinese_regex.findall(txt[i]["artists"][0]['name'])) == 0:
+              f.write(txt[i]["title"] +"; " +txt[i]["artists"][0]['name']+ "\n")  
+    return 0
 def recs():
     songs= []
     with open(os.path.join("backend", "songs.txt"), "r") as f:
@@ -90,6 +87,7 @@ def getPlaylistInfo(playlist1):
         title = song.split(';')[0]
         title = re.sub(r"\(.*?\)", "", title)
         artist= song.split(';')[1].strip()
+        artist = re.sub(r"\(.*?\)", "", artist)
         artist = getRidOfSpaces(artist)
         title = getRidOfSpaces(title)
         realJSON= getTags(artist, title)
@@ -120,10 +118,14 @@ tagJSON={"toptags":{"tag":[{"count":100,"name":"pop","url":"https://www.last.fm/
 def processTags(jsons):
     i = 0
     allTags = []
-    while i < len(jsons["toptags"]["tag"]) and i < 10:
+    if "toptags" not in jsons:
+        return allTags
+    while i < len(jsons["toptags"]["tag"]):
        allTags.append(jsons["toptags"]["tag"][i]["name"])
        i+=1
     allTags= list(filter(("MySpotigramBot").__ne__, allTags))
+    allTags= list(filter(("fucking brilliant").__ne__, allTags))
+
     #print(allTags)
     return allTags
 
@@ -164,9 +166,9 @@ def get_cover_from_itunes(artist, song):
         if data["resultCount"] > 0:
             for i in range(len(data["results"])) :
                 if data["results"][i]["artistName"].lower() ==  artist.lower():
-                    return data["results"][i]["artworkUrl100"].replace("100x100", "500x500")
+                    return data["results"][i]["artworkUrl100"].replace("100x100", "300x300")
                         
-        return None
+        return ""
     except Exception as e:
         print(f"Error fetching from iTunes: {e}")
         return None
@@ -175,13 +177,10 @@ def coverArtURLs(playlist1):
     lis = []
     for song in playlist1:
         song = song.strip()
-        title = song.split(';')[0]
+        title = song.split(';')[0].strip()
         title = re.sub(r"\(.*?\)", "", title)
         artist= song.split(';')[1].strip()
-        artist = getRidOfSpaces(artist)
-        title = getRidOfSpaces(title)
         lis.append(get_cover_from_itunes(artist, title))
-
     return lis
 if __name__ == '__main__':
     #   getPlaylistInfo(playlist)
@@ -189,5 +188,5 @@ if __name__ == '__main__':
     #   youTube(x)
     #   y= recs()
     #   realRecs(y, x)
-    # print(get_cover_from_itunes("Eminem", "Lose Yourself"))
+    # print(get_cover_from_itunes("The Weeknd", "Wicked Games"))
     print(coverArtURLs(playlist))

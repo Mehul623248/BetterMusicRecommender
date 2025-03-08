@@ -11,6 +11,7 @@ function HomePage() {
 
     const [songs, setSongs] = useState([]);
     const [recs,setRecs] = useState([]);
+    const [imgs, setImgs] = useState([]);
     const url = "http://localhost:5000";
 
     const handleClick = (e) => {
@@ -35,7 +36,8 @@ function HomePage() {
         else{
             axios.post(url + `/getRecs`, {songs})
             .then((response) => {
-                setRecs(response.data);
+                setRecs(response.data[0]);
+                setImgs(response.data[1]);
             })
         }
     }
@@ -113,7 +115,7 @@ function HomePage() {
             {recs.length > 0 && (
                 <ul className="mt-4">
                 {recs.map((rec, index) => (
-                    <li key={index} >{rec}<br></br> <br></br></li>
+                    <li key={index} ><img src={imgs[index]} /><br></br> <br></br>{rec}<br></br> <br></br></li>
                 ))}
                 </ul>
            )}
