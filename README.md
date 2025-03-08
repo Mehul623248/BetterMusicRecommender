@@ -10,3 +10,4 @@ How the Music Recommender works (may add GUI later)
 8. If 5 or more tags match original tags, then end
 9. Else, redo the selection of 5 random songs
    
+![image](https://github.com/user-attachments/assets/5716cdba-d0d0-4075-8430-10f826ad6a5f)
