@@ -10,3 +10,6 @@ How the Music Recommender works (may add GUI later)
 8. Else, redo the selection of 5 random songs
    
 ![image](https://github.com/user-attachments/assets/5716cdba-d0d0-4075-8430-10f826ad6a5f)
+![image](https://github.com/user-attachments/assets/b985e8d6-1522-4ae4-a913-73f7d22a5768)
+![image](https://github.com/user-attachments/assets/5effe99f-a041-447d-878d-834b0bf9850e)
+
