@@ -8,6 +8,8 @@ import axios from 'axios';
 function HomePage() {
     const [ song, setSongValue ] = useState('');
     // const [songList, setSongListValue] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState(null)
 
     const [songs, setSongs] = useState([]);
     const [recs,setRecs] = useState([]);
@@ -34,11 +36,22 @@ function HomePage() {
             alert("You did not add any songs");
         }
         else{
-            axios.post(url + `/getRecs`, {songs})
-            .then((response) => {
-                setRecs(response.data[0]);
-                setImgs(response.data[1]);
-            })
+                setIsLoading(true); // Set loading to true
+              //  alert('isLoading set to true:', isLoading); // Debug: Check state value *after* setting
+                try {
+                            axios.post(url + `/getRecs`, {songs})
+                        .then((response) => {
+                            
+                            setRecs(response.data[0]);
+                            setImgs(response.data[1]);
+                        })
+                } catch (err) {
+                setError(err); // Set error if something goes wrong
+                } finally {
+                setIsLoading(false); // Set loading to false regardless of success or failure
+                //alert('isLoading set to false:', isLoading); // Debug: Check state value *after* setting
+                }
+          
         }
     }
     return (
@@ -112,6 +125,8 @@ function HomePage() {
             <div>
                 <p>needs to be in format: Song by Artist with spaces before and after the word by</p>
             </div>
+
+            {isLoading && <p>Loading...</p>}
             {recs.length > 0 && (
                 <ul className="mt-4">
                 {recs.map((rec, index) => (

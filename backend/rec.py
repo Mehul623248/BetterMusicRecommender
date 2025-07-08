@@ -25,8 +25,11 @@ playlist = [
 def youTube(lis):
     from ytmusicapi import YTMusic
     ytmusic = YTMusic()
-    quest = ' '.join(lis)
+    real_lis= random.sample(list(lis), 5)
+    quest = ' '.join(real_lis)
+    # quest= "'experimental hip hop', 'trap', 'pop rap', 'rage', 'industrial hip hop', 'j cole', 'Masterpiece', 'fire', 'banger', '2024'"
     txt = ytmusic.search(query=quest, filter="songs", limit=30)
+    # print(txt)
     japanese_chinese_regex = re.compile(r'[\u4E00-\u9FFF\u3040-\u30FF\u31F0-\u31FF]')
     with open(os.path.join("backend", "songs.txt"), "w", encoding="utf-8") as f:
           for i in range(len(txt)):
@@ -59,6 +62,8 @@ def recs():
     return seenAlready
 
 def realRecs(seenAlready, origTags):
+
+
     reccommended= random.sample(list(seenAlready), 5)
     cleaned_list = [element.strip() for element in reccommended]
     # print(cleaned_list)
@@ -66,7 +71,7 @@ def realRecs(seenAlready, origTags):
     x =  moreProcessTags()
     common_elements = list(set(x) & set(origTags))
    
-    while(len(common_elements) < 5):
+    while(len(common_elements) < 3):
         reccommended= random.sample(list(seenAlready), 5)
         cleaned_list = [element.strip() for element in reccommended]
         getPlaylistInfo(cleaned_list)
@@ -93,7 +98,8 @@ def getPlaylistInfo(playlist1):
         realJSON= getTags(artist, title)
         processedTags =processTags(realJSON)
         for tag in processedTags:
-            moreTags.append(tag)
+            if(tag.startswith("-") == False and ("fuck" in tag) == False and tag != "MySpotigramBot"):
+                    moreTags.append(tag)
         # lister = oneTag(processedTags)
         # total.append(getSongs(lister))
     # with open(os.path.join("backend", "actualTracks.txt"), "a") as f:
@@ -101,7 +107,7 @@ def getPlaylistInfo(playlist1):
     #        for it in item:
     #         f.write(it + "\n")
         #  f.write(total)
-    with open(os.path.join("backend", "actualTags.txt"), "w") as f:
+    with open(os.path.join("backend", "actualTags.txt"), "w", encoding="utf-8") as f:
             for tag in moreTags:
                     f.write(tag+"\n")
     # print(moreTags)
