@@ -1,8 +1,8 @@
 import './HomePage.css';
-import {Autocomplete, Button, TextField, InputAdornment, IconButton, Typography} from '@mui/material'
-import {Padding, PlaceOutlined, Visibility, VisibilityOff} from '@mui/icons-material'
+import { Button, TextField} from '@mui/material'
+// import {Padding, PlaceOutlined, Visibility, VisibilityOff} from '@mui/icons-material'
 import React, {useState} from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+// import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 function HomePage() {
@@ -129,7 +129,7 @@ function HomePage() {
             {recs.length > 0 && (
                 <ul className="mt-4">
                 {recs.map((rec, index) => (
-                    <li key={index} ><img src={imgs[index]} /><br></br> <br></br>{rec}<br></br> <br></br></li>
+                    <li key={index} ><img src={imgs[index]} alt=""/><br></br> <br></br>{rec}<br></br> <br></br></li>
                 ))}
                 </ul>
            )}
