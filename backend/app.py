@@ -13,7 +13,8 @@ import rec
 # client = MongoClient(uri, server_api=ServerApi('1'))
 
 
-app = Flask(__name__)
+# app = Flask(__name__)
+app = Flask(__name__, static_folder="../frontend/build/static", template_folder="../frontend/build")
 
 CORS(app)
 
