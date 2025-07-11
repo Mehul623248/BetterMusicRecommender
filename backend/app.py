@@ -1,9 +1,10 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, send_from_directory
 from flask_cors import CORS
 from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
 import cmath
 from . import rec
+import os
 
 # uri = (URI) #need to make new cluster
 
@@ -12,18 +13,29 @@ from . import rec
 
 
 # app = Flask(__name__)
-app = Flask(__name__)
+# app = Flask(__name__)
+
+
+
+# CORS(app)
+
+
+current_dir = os.path.dirname(os.path.abspath(__file__))
+# Get the project root directory (one level up from 'backend')
+project_root = os.path.join(current_dir, '..')
+# Path to your React build folder
+REACT_BUILD_DIR = os.path.join(project_root, 'frontend', 'build')
+
+app = Flask(__name__, static_folder=REACT_BUILD_DIR) # Tell Flask where to find static files
 
 CORS(app)
-
-# db = client['Traveler']
-
 
 
 
 @app.route('/')
 def serve_react_app():
-    return app.send_static_file('frontend/build/index.html')
+
+    return send_from_directory(app.static_folder, 'index.html') #app.send_static_file('frontend/build/index.html')
 
 
 @app.route('/getRecs', methods=['POST'])
