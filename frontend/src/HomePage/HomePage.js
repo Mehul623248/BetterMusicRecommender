@@ -14,7 +14,7 @@ function HomePage() {
     const [songs, setSongs] = useState([]);
     const [recs,setRecs] = useState([]);
     const [imgs, setImgs] = useState([]);
-    const url = "http://localhost:5000";
+    const url = "https://bettermusicrecommender.onrender.com";
 
     const handleClick = (e) => {
         //e.preventDefault();
