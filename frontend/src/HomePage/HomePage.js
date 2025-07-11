@@ -9,7 +9,6 @@ function HomePage() {
     const [ song, setSongValue ] = useState('');
     // const [songList, setSongListValue] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState(null)
 
     const [songs, setSongs] = useState([]);
     const [recs,setRecs] = useState([]);
