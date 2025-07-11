@@ -3,7 +3,7 @@ from flask_cors import CORS
 from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
 import cmath
-import rec
+from . import rec
 
 # uri = (URI) #need to make new cluster
 
