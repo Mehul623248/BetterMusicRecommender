@@ -23,7 +23,8 @@ playlist = [
 ]
 
 def youTube(lis):
-    from ytmusicapi import YTMusic
+    from . import ytmusicapi 
+    import YTMusic
     ytmusic = YTMusic()
     real_lis= random.sample(list(lis), 5)
     quest = ' '.join(real_lis)
