@@ -45,7 +45,7 @@ function HomePage() {
                             setImgs(response.data[1]);
                         })
                 } catch (err) {
-                setError(err); // Set error if something goes wrong
+                //setError(err); // Set error if something goes wrong
                 } finally {
                 setIsLoading(false); // Set loading to false regardless of success or failure
                 //alert('isLoading set to false:', isLoading); // Debug: Check state value *after* setting
