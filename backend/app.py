@@ -12,7 +12,7 @@ from . import rec
 
 
 # app = Flask(__name__)
-app = Flask(__name__, static_folder="../frontend/build/static", template_folder="../frontend/build")
+app = Flask(__name__)
 
 CORS(app)
 
