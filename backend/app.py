@@ -26,7 +26,7 @@ project_root = os.path.join(current_dir, '..')
 # Path to your React build folder
 REACT_BUILD_DIR = os.path.join(project_root, 'frontend', 'build')
 
-app = Flask(__name__, static_folder=REACT_BUILD_DIR) # Tell Flask where to find static files
+app = Flask(__name__, static_folder=REACT_BUILD_DIR , static_url_path='/')  # Tell Flask where to find static files
 
 CORS(app)
 
@@ -61,6 +61,10 @@ def signup():
 
     return 0
 
+@app.route('/', defaults={'path': ''})
+@app.route('/<path:path>')
+def catch_all(path):
+    return send_from_directory(app.static_folder, 'index.html')
 
 
 if __name__ == '__main__':
