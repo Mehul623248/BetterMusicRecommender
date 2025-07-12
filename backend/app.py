@@ -52,8 +52,7 @@ def login():
     y= rec.recs()
     reccomendations = rec.realRecs(y, x)
     imgs = rec.coverArtURLs(reccomendations)
-    return [reccomendations, imgs]
-
+    return jsonify([reccomendations, imgs])
 
 @app.route('/signup', methods=['POST'])
 def signup():
